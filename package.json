@@ -1,12 +1,13 @@
 
 {
   "name": "spiritux-sanctuary",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
-  "description": "Le sanctuaire numérique des sagesses célestes",
+  "type": "module",
   "scripts": {
-    "start": "npx serve .",
-    "deploy": "git add . && git commit -m 'Update' && git push"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -14,8 +15,18 @@
     "react-router-dom": "^7.13.0",
     "@google/genai": "^1.38.0",
     "lucide-react": "^0.563.0",
-    "framer-motion": "^12.29.2"
+    "framer-motion": "^12.29.2",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.2"
   },
-  "author": "Spiritux Expert",
-  "license": "MIT"
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17"
+  }
 }
