@@ -432,7 +432,7 @@ export const EbookDetail: React.FC = () => {
                 <div className="mt-8 md:mt-10 flex justify-center opacity-20">
                   <div className="flex items-center gap-2.5 md:gap-3">
                     <div className="h-[1px] w-12 md:w-16 bg-gradient-to-r from-transparent to-white/20" />
-                    <Star size={8} md:size={10} className="text-white" />
+                    <Star className="w-2 h-2 md:w-2.5 md:h-2.5 text-white" />
                     <div className="h-[1px] w-12 md:w-16 bg-gradient-to-l from-transparent to-white/20" />
                   </div>
                 </div>
