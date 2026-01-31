@@ -3,24 +3,28 @@ import { Ebook, SiteConfig, LocaleInfo, Translations, Language } from './types';
 export const INITIAL_EBOOKS: Ebook[] = [
   {
     "id": "1",
-    "title": "L'Éveil du Troisième Œil",
-    "description": "Un guide complet pour explorer vos facultés intuitives et transcender la vision ordinaire.",
-    "summary": "Ce livre vous enseigne les techniques ancestrales de méditation et de visualisation pour activer la glande pinéale. Apprenez à percevoir les énergies subtiles et à renforcer votre connexion avec l'univers.",
-    "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=600&h=800",
+    "title": "📖 LE CODE DE LA FAVEUR DIVINE",
+    "description": "L'Art de Devenir une Cible pour les Bénédictions célestes",
+    "summary": "Avez-vous l'impression de hurler dans le vide pendant que d'autres murmurent et sont exaucés ?\nLe monde vous a menti. On vous a dit que seul le travail acharné payait. Mais vous voyez bien la réalité : des gens moins qualifiés que vous occupent les postes que vous convoitez. Des entrepreneurs moins talentueux attirent les plus gros contrats.\nPourquoi ? Parce qu'ils possèdent un avantage invisible : La Faveur.\nDans cet ebook révolutionnaire, Spiritux brise le silence et vous livre les clés d'un système spirituel millénaire. Ce n'est pas un livre de motivation, c'est un manuel d'instruction pour activer les lois qui forcent les circonstances à s'aligner en votre faveur.\n________________________________________\n🔥 CE QUE VOUS ALLEZ DÉCOUVRIR DANS CET EBOOK :\n•\tLe Décodage du Code : Pourquoi la faveur n'est ni de la chance, ni du hasard, et comment l'activer à volonté.\n•\tLa Loi de l'Honneur : La clé maîtresse pour ouvrir les portes que l'argent ne peut pas acheter.\n•\tL'Aimant à Opportunités : Comment configurer votre psychologie pour attirer les \"Destiny Helpers\" (vos aides de destinée).\n•\tLe Protocole de Sortie : Comment briser définitivement les cycles de stagnation et de \"presque réussi\".\n•\tLe Guide de Prière de 7 Jours : Un programme d'accélération intensif pour voir des résultats concrets dès la première semaine.\n________________________________________\n💎 POURQUOI CE LIVRE EST DIFFÉRENT ?\nContrairement aux ouvrages théoriques, Le Code de la Faveur Divine est conçu comme une expérience immersive. Spiritux utilise une approche hybride mêlant sagesse spirituelle profonde et exercices pratiques immédiats.\nImaginez votre vie si...\n•\t...les décideurs se souvenaient de votre nom sans raison apparente.\n•\t...les obstacles qui vous freinaient depuis des années s'effondraient d'eux-mêmes.\n•\t...vous marchiez avec l'assurance tranquille de celui qui sait que le Ciel est ouvert au-dessus de sa tête",
+    "image": "https://image2url.com/r2/default/images/1769901090065-3d0aa5de-9b9c-45f1-98d9-115ae7a6e0f9.png",
     "officialPrice": 49.99,
     "promoPrice": 29.99,
-    "chariowLink": "https://chariow.com/p/eveil-3-oeil",
+    "chariowLink": "https://spiritux.mychariow.shop/prd_0zudbl/checkout",
     "isFeatured": true,
     "isPromo": true,
-    "category": "Méditation",
+    "category": "FAVEUR DIVINE",
     "customFields": [
       {
         "label": "Auteur",
-        "value": "Maître Élysée"
+        "value": "Spiritux"
       },
       {
         "label": "Pages",
         "value": "180"
+      },
+      {
+        "label": "Format",
+        "value": "PDF"
       }
     ]
   },
@@ -32,7 +36,7 @@ export const INITIAL_EBOOKS: Ebook[] = [
     "image": "https://image2url.com/r2/default/images/1769896074714-cfca3a69-71c0-4d62-9b59-133265119ddb.png",
     "officialPrice": 10.99,
     "promoPrice": 6.8,
-    "chariowLink": "https://spiritux.mychariow.shop/prd_17jtvi",
+    "chariowLink": "https://spiritux.mychariow.shop/prd_17jtvi/checkout",
     "isFeatured": true,
     "isPromo": true,
     "category": "Déblocages spirituels",
