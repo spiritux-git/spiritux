@@ -32,7 +32,7 @@ export interface LocaleInfo {
   symbol: string;
 }
 
-export type Language = 'fr' | 'en' | 'es' | 'de';
+export type Language = 'fr' | 'en' | 'es' | 'de' | 'it';
 
 export interface Translations {
   // Navigation & General

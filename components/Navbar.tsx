@@ -8,60 +8,59 @@ import { useLanguage } from '../context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language } from '../types';
 
-export const Navbar: React.FC = () => {
-  const location = useLocation();
-  const config = storage.getConfig();
-  const { language, setLanguage, t } = useLanguage();
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const langMenuRef = useRef<HTMLDivElement>(null);
-  
-  const navItems = [
-    { path: '/', label: t.navHome, icon: Home },
-    { path: '/library', label: t.navLibrary, icon: BookOpen },
-  ];
+/**
+ * Composant LanguageSwitcher isolé pour éviter les conflits de Refs 
+ * entre les versions Desktop et Mobile.
+ */
+const LanguageSwitcher: React.FC = () => {
+  const { language, setLanguage } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const langs: {code: Language, label: string}[] = [
+  const langs: { code: Language; label: string }[] = [
     { code: 'fr', label: 'Français' },
     { code: 'en', label: 'English' },
     { code: 'es', label: 'Español' },
-    { code: 'de', label: 'Deutsch' }
+    { code: 'de', label: 'Deutsch' },
+    { code: 'it', label: 'Italiano' }
   ];
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
-        setIsLangOpen(false);
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isOpen]);
 
-  const LanguageSwitcher = () => (
-    <div className="relative" ref={langMenuRef}>
+  return (
+    <div className="relative" ref={containerRef}>
       <button 
-        onClick={() => setIsLangOpen(!isLangOpen)}
-        className={`relative flex items-center gap-2 px-3 py-2 rounded-full text-slate-400 hover:text-white transition-all bg-white/5 border border-white/10 hover:border-purple-500/30 group ${isLangOpen ? 'border-purple-500/50 bg-white/10 text-white' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        className={`relative flex items-center gap-2 px-3 py-2 rounded-full text-slate-400 hover:text-white transition-all bg-white/5 border border-white/10 hover:border-purple-500/30 group ${isOpen ? 'border-purple-500/50 bg-white/10 text-white' : ''}`}
       >
-        <Languages size={16} className={`${isLangOpen ? 'rotate-12' : ''} transition-transform duration-300`} />
+        <Languages size={16} className={`${isOpen ? 'rotate-12' : ''} transition-transform duration-300`} />
         <span className="text-[10px] font-black uppercase tracking-tighter">{language}</span>
-        <ChevronDown size={12} className={`transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown size={12} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
         
         {/* Active Glow */}
-        {isLangOpen && (
+        {isOpen && (
           <div className="absolute inset-0 rounded-full bg-purple-500/10 blur-md -z-10 animate-pulse" />
         )}
       </button>
 
       <AnimatePresence>
-        {isLangOpen && (
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute right-0 mt-2 w-40 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[60]"
+            className="absolute right-0 mt-2 w-40 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[60]"
           >
             <div className="p-1.5 space-y-0.5">
               {langs.map((l) => (
@@ -69,7 +68,7 @@ export const Navbar: React.FC = () => {
                   key={l.code}
                   onClick={() => {
                     setLanguage(l.code);
-                    setIsLangOpen(false);
+                    setIsOpen(false);
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${
                     language === l.code 
@@ -91,6 +90,17 @@ export const Navbar: React.FC = () => {
       </AnimatePresence>
     </div>
   );
+};
+
+export const Navbar: React.FC = () => {
+  const location = useLocation();
+  const config = storage.getConfig();
+  const { t } = useLanguage();
+  
+  const navItems = [
+    { path: '/', label: t.navHome, icon: Home },
+    { path: '/library', label: t.navLibrary, icon: BookOpen },
+  ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/5">
@@ -100,15 +110,14 @@ export const Navbar: React.FC = () => {
           to="/"
           className="flex items-center gap-2 md:gap-3 group cursor-pointer"
         >
-          <div className="relative w-10 h-10 md:w-14 md:h-14 overflow-visible">
+          <div className="relative w-10 h-10 md:w-14 md:h-14 overflow-visible rounded-full">
             <GlowingEffect
-              spread={60}
+              spread={40}
               glow={true}
               disabled={false}
-              proximity={80}
+              proximity={64}
               inactiveZone={0.01}
               borderWidth={2}
-              className="rounded-full"
             />
             
             <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 z-[1] group-hover:border-transparent transition-all duration-500 shadow-2xl group-hover:shadow-purple-500/20">
@@ -119,7 +128,8 @@ export const Navbar: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 via-transparent to-blue-500/10 opacity-50 group-hover:opacity-0 transition-opacity" />
             </div>
-            <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+            {/* Visual glow backdrop for extra "pop" on hover */}
+            <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 scale-125" />
           </div>
           
           <div className="flex flex-col">
