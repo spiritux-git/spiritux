@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Search, SlidersHorizontal, ArrowLeft, Sparkles } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowLeft, Sparkles, Tag } from 'lucide-react';
 import { storage } from '../services/storage';
 import { LuminousCard } from '../components/LuminousCard';
 import { GradientButton } from '../components/GradientButton';
@@ -89,6 +89,15 @@ export const Library: React.FC = () => {
                     alt={ebook.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110" 
                   />
+                  
+                  {/* Promo Badge Overlay */}
+                  {ebook.isPromo && (
+                    <div className="absolute top-3 left-3 z-20 bg-rose-600/90 backdrop-blur-sm shadow-[0_0_15px_rgba(225,29,72,0.4)] px-2 py-1 rounded-lg border border-white/10 flex items-center gap-1.5">
+                      <Tag size={10} className="text-white fill-current" />
+                      <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white">Promo</span>
+                    </div>
+                  )}
+
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity" />
                 </div>
                 <div className="p-4 md:p-6">

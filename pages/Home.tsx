@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, BookOpen, Quote } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, Quote, Tag } from 'lucide-react';
 import { storage } from '../services/storage';
 import { LuminousCard } from '../components/LuminousCard';
 import { GradientButton } from '../components/GradientButton';
@@ -143,8 +143,16 @@ export const Home: React.FC = () => {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <LuminousCard onClick={() => navigate(`/ebook/${ebook.id}`)}>
-                <div className="aspect-[3/4] overflow-hidden">
+                <div className="aspect-[3/4] overflow-hidden relative">
                   <img src={ebook.image} alt={ebook.title} className="w-full h-full object-cover" />
+                  
+                  {/* Promo Badge */}
+                  {ebook.isPromo && (
+                    <div className="absolute top-4 left-4 z-20 bg-rose-600 shadow-[0_0_15px_rgba(225,29,72,0.5)] px-3 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5">
+                      <Tag size={10} className="text-white fill-current" />
+                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white">Promo</span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <div className="text-[10px] text-purple-400 font-bold mb-2 uppercase tracking-widest">{ebook.category}</div>
