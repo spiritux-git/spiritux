@@ -7,9 +7,11 @@ import { Home } from './pages/Home';
 import { Library } from './pages/Library';
 import { Admin } from './pages/Admin';
 import { EbookDetail } from './pages/EbookDetail';
+import { Contact } from './pages/Contact';
 import { storage } from './services/storage';
 import { GradFlow } from './components/GradFlow';
-import { LanguageProvider } from './context/LanguageContext';
+import { WhatsAppFloating } from './components/WhatsAppFloating';
+import { FirebaseProvider, useFirebase } from './context/FirebaseContext';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -20,8 +22,19 @@ const ScrollToTop = () => {
 };
 
 const FacebookPixel = () => {
+  const { config } = useFirebase();
   useEffect(() => {
-    const config = storage.getConfig();
+    // Favicon update
+    if (config.favicon) {
+      let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = config.favicon;
+    }
+
     if (config.fbPixelId) {
       const script = document.createElement('script');
       script.innerHTML = `
@@ -38,35 +51,33 @@ const FacebookPixel = () => {
       `;
       document.head.appendChild(script);
     }
-  }, []);
+  }, [config]);
   return null;
 };
 
 const App: React.FC = () => {
   return (
-    <LanguageProvider>
+    <FirebaseProvider>
       <Router>
         <FacebookPixel />
         <ScrollToTop />
         <div className="min-h-screen relative text-slate-100 selection:bg-purple-500/30">
-          {/* Background Layers */}
           <GradFlow />
-          
           <Navbar />
-          
           <main className="relative z-10">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/library" element={<Library />} />
               <Route path="/ebook/:id" element={<EbookDetail />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
           </main>
-          
           <Footer />
+          <WhatsAppFloating />
         </div>
       </Router>
-    </LanguageProvider>
+    </FirebaseProvider>
   );
 };
 

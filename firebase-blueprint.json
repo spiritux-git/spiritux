@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "Ebook": {
+      "title": "Ebook",
+      "description": "A spiritual manuscript or ebook",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "summary": { "type": "string" },
+        "image": { "type": "string" },
+        "officialPrice": { "type": "number" },
+        "promoPrice": { "type": "number" },
+        "chariowLink": { "type": "string" },
+        "isFeatured": { "type": "boolean" },
+        "isPromo": { "type": "boolean" },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "summary", "image", "officialPrice", "promoPrice", "chariowLink", "isFeatured", "category"]
+    },
+    "SiteConfig": {
+      "title": "SiteConfig",
+      "description": "Global website configuration",
+      "type": "object",
+      "properties": {
+        "logo": { "type": "string" },
+        "favicon": { "type": "string" },
+        "fbPixelId": { "type": "string" },
+        "homeVideoUrl": { "type": "string" },
+        "formspreeEndpoint": { "type": "string" },
+        "seoKeywords": { "type": "array", "items": { "type": "string" } },
+        "socialLinks": {
+          "type": "object",
+          "properties": {
+            "whatsapp": { "type": "string" },
+            "facebook": { "type": "string" },
+            "instagram": { "type": "string" },
+            "x": { "type": "string" },
+            "tiktok": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/ebooks/{ebookId}": {
+      "schema": "Ebook",
+      "description": "Collection of spiritual ebooks"
+    },
+    "/config/main": {
+      "schema": "SiteConfig",
+      "description": "Single document for site configuration"
+    }
+  }
+}

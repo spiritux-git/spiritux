@@ -1,0 +1,86 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: ebooks
+    // Document ID: ebookId
+    // Fields:
+    //   - id: string
+    //   - title: string
+    //   - description: string
+    //   - summary: string
+    //   - image: string
+    //   - officialPrice: number
+    //   - promoPrice: number
+    //   - chariowLink: string
+    //   - isFeatured: bool
+    //   - isPromo: bool
+    //   - category: string
+    //
+    // Collection: config
+    // Document ID: main
+    // Fields:
+    //   - logo: string
+    //   - favicon: string
+    //   - fbPixelId: string
+    //   - homeVideoUrl: string
+    //   - formspreeEndpoint: string
+    //   - seoKeywords: list
+    //   - socialLinks: map
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "spirituxebook@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidEbook(data) {
+      return data.keys().hasAll(['id', 'title', 'description', 'summary', 'image', 'officialPrice', 'promoPrice', 'chariowLink', 'isFeatured', 'category']) &&
+             data.title is string && data.title.size() < 200 &&
+             data.description is string && data.description.size() < 1000 &&
+             data.summary is string && data.summary.size() < 5000 &&
+             data.image is string && data.image.size() < 1000 &&
+             data.officialPrice is number &&
+             data.promoPrice is number &&
+             data.chariowLink is string &&
+             data.isFeatured is bool &&
+             data.category is string;
+    }
+
+    function isValidConfig(data) {
+      return data.logo is string && data.logo.size() < 1000 &&
+             data.favicon is string && data.favicon.size() < 1000 &&
+             data.fbPixelId is string &&
+             data.homeVideoUrl is string &&
+             data.formspreeEndpoint is string &&
+             data.seoKeywords is list &&
+             data.socialLinks is map;
+    }
+
+    // Rules
+    match /ebooks/{ebookId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidEbook(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /config/main {
+      allow read: if true;
+      allow write: if isAdmin() && isValidConfig(request.resource.data);
+    }
+    
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+  }
+}

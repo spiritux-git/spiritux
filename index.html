@@ -5,16 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spiritux - Sagesses Célestes</title>
+    <link rel="icon" href="https://image2url.com/r2/default/images/1770004935640-08fb3b0f-a3e7-4a0a-8614-9cfb1ed71540.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700;900&family=Uncial+Antiqua&family=Almendra:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Uncial+Antiqua&family=Almendra:ital,wght@0,400;0,700;1,400&family=Inter:wght@200;300;400;600&display=swap');
       
+      :root {
+        --color-bg: #0f0720;
+        --color-magenta: #ff00ff;
+        --color-cyan: #00ffff;
+        --color-gold: #f59e0b;
+      }
+
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #020617;
+        background-color: var(--color-bg);
         color: #f8fafc;
         margin: 0;
         padding: 0;
+        letter-spacing: 0.015em;
       }
       
       .font-cinzel { font-family: 'Cinzel', serif; }
@@ -23,6 +32,56 @@
       .font-cinzel-dec { font-family: 'Cinzel Decorative', cursive; }
 
       #root { min-height: 100vh; }
+
+      @keyframes shimmer {
+        0% { transform: translateX(-150%); }
+        50% { transform: translateX(50%); }
+        100% { transform: translateX(150%); }
+      }
+      .animate-shimmer {
+        animation: shimmer 3s infinite linear;
+      }
+
+      @keyframes gradient-flow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .animate-gradient-flow {
+        background-size: 200% 200%;
+        animation: gradient-flow 8s ease-in-out infinite;
+      }
+
+      /* Effet Aura Logo Spiritux */
+      .text-aura-gradient {
+        background: linear-gradient(to right, #00ffff, #ff00ff, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 15px rgba(255, 0, 255, 0.4));
+      }
+
+      /* Nouveau dégradé pour les prix (Cyan vers Magenta) */
+      .text-price-gradient {
+        background: linear-gradient(to right, #00ffff, #8b5cf6, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Texture de grain plus active pour le côté 3D */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='n'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3%3C/svg%3%3E");
+        opacity: 0.08;
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      /* Perspective globale pour les effets 3D */
+      .perspective-container {
+        perspective: 1000px;
+      }
     </style>
 <script type="importmap">
 {

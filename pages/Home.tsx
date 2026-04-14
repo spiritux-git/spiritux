@@ -2,31 +2,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, BookOpen, Quote, Tag } from 'lucide-react';
-import { storage } from '../services/storage';
+import { Sparkles, ArrowRight, BookOpen, Quote, Star, Tag } from 'lucide-react';
+import { useFirebase } from '../context/FirebaseContext';
 import { LuminousCard } from '../components/LuminousCard';
 import { GradientButton } from '../components/GradientButton';
-import { useLanguage } from '../context/LanguageContext';
+import { UI_TEXT } from '../constants';
+import EnergyBeam from '../components/EnergyBeam';
+import { CelestialParticles } from '../components/CelestialParticles';
 
 const TestimonialCard = ({ text, book }: any) => (
   <LuminousCard className="h-full">
-    <div className="p-8 flex flex-col h-full relative group">
-      {/* Subtle Quote Icon Background */}
-      <Quote className="absolute top-6 right-6 text-purple-500/10 w-16 h-16 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6" />
-      
+    <div className="p-10 flex flex-col h-full relative group">
+      <Quote className="absolute top-8 right-8 text-cyan-500/5 w-20 h-20 transition-transform duration-1000 group-hover:scale-125 group-hover:rotate-12" />
       <div className="flex-1">
-        <p className="text-base md:text-xl text-slate-300 italic mb-8 leading-relaxed font-mystiqua tracking-wide relative z-10">
-          "{text}"
-        </p>
+        <div className="flex gap-1 mb-6">
+          {[...Array(5)].map((_, i) => (<Star key={i} size={10} className="text-cyan-400 fill-cyan-400/30" />))}
+        </div>
+        <p className="text-lg md:text-2xl text-slate-100 italic mb-10 leading-relaxed font-mystiqua tracking-wide relative z-10">"{text}"</p>
       </div>
-
-      <div className="pt-6 border-t border-white/5 flex items-center gap-4">
-        <div className="w-1.5 h-8 bg-gradient-to-b from-purple-500 to-blue-500 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.4)]" />
+      <div className="pt-8 border-t border-white/10 flex items-center gap-5">
+        <div className="w-1.5 h-10 bg-gradient-to-b from-cyan-400 via-magenta-500 to-amber-500 rounded-full" />
         <div className="flex flex-col">
-          <span className="text-[10px] md:text-[11px] font-black text-blue-400 uppercase tracking-[0.4em]">
-            {book}
-          </span>
-          <span className="text-[7px] text-slate-500 uppercase tracking-[0.2em] font-bold mt-1">Sagesse Céleste</span>
+          <span className="text-[11px] md:text-[12px] font-black text-white uppercase tracking-[0.5em]">{book}</span>
+          <span className="text-[8px] text-cyan-500/80 uppercase tracking-[0.3em] font-bold mt-1.5">Sagesse Éternelle</span>
         </div>
       </div>
     </div>
@@ -35,131 +33,87 @@ const TestimonialCard = ({ text, book }: any) => (
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
-  const ebooks = storage.getEbooks();
-  
-  // Get featured ebooks and apply local translation if it's one of the initial books
-  const featuredEbooks = ebooks.filter(e => e.isFeatured).map(e => {
-    if (e.id === '1') return { ...e, title: t.ebook1Title };
-    if (e.id === '2') return { ...e, title: t.ebook2Title };
-    if (e.id === '3') return { ...e, title: t.ebook3Title };
-    if (e.id === '4') return { ...e, title: t.ebook4Title };
-    if (e.id === '5') return { ...e, title: t.ebook5Title };
-    if (e.id === '6') return { ...e, title: t.ebook6Title };
-    return e;
-  });
+  const { config, ebooks } = useFirebase();
+  const featuredEbooks = ebooks.filter(e => e.isFeatured);
 
   const testimonials = [
-    {
-      text: t.testi1Text,
-      book: t.testi1Book
-    },
-    {
-      text: t.testi2Text,
-      book: t.testi2Book
-    },
-    {
-      text: t.testi3Text,
-      book: t.testi3Book
-    }
+    { text: "Le royaume des cieux est semblable à un marchand qui cherche de belles perles. Lorsqu'il en a trouvé une de grand prix, il l'achète.", book: "TRÉSOR CACHÉ" },
+    { text: "Celui qui bâtit sa maison sur le roc restera inébranlable face à la tempête. Vos fondations sont votre force.", book: "LE ROC" },
+    { text: "Rien ne vous sera impossible si vous croyez en la puissance infinie qui réside en votre âme.", book: "FORCE DE LA FOI" }
   ];
 
   return (
-    <div className="bg-transparent min-h-screen text-slate-200">
-      {/* Hero Section */}
-      <section className="relative pt-28 md:pt-40 pb-16 md:pb-20 px-4 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
-        
+    <div className="bg-transparent min-h-screen text-slate-100 relative">
+      <CelestialParticles />
+      <section className="relative pt-24 md:pt-36 pb-0 px-4 overflow-hidden">
         <div className="container mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-purple-500/30 bg-purple-500/5 text-purple-400 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-6 md:mb-8"
-          >
-            <Sparkles size={12} /> {t.heroSparkle}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-[6px] md:text-[8px] font-black uppercase tracking-[0.4em] mb-4 backdrop-blur-md">
+            <Sparkles size={12} className="animate-pulse" /> {UI_TEXT.heroSparkle}
           </motion.div>
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-6xl lg:text-7xl font-cinzel font-bold text-white mb-6 md:mb-10 flex flex-wrap items-center justify-center gap-x-3 md:gap-x-6"
-          >
-            <span className="bg-gradient-to-r from-purple-500 via-pink-400 to-orange-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.3)]">
-              {t.heroTitle}
-            </span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-sm md:text-xl text-slate-400 italic max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed font-mystiqua px-4"
-          >
-            {t.heroSubtitle}
-          </motion.p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-            <GradientButton 
-              onClick={() => navigate('/library')}
-              className="px-6 py-3 w-full sm:w-auto"
-            >
-              <ArrowRight size={16} /> {t.exploreLibrary}
+          <div className="relative mb-2 py-2 md:py-4">
+            <div className="absolute inset-0 z-0 opacity-80 pointer-events-none flex items-center justify-center">
+              <div className="w-full h-full max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] md:rounded-[3rem] border border-white/10 relative">
+                 {config.homeVideoUrl ? (
+                   <video 
+                     src={config.homeVideoUrl} 
+                     autoPlay 
+                     muted 
+                     loop 
+                     playsInline 
+                     className="w-full h-full object-cover opacity-40 scale-110"
+                   />
+                 ) : (
+                   <EnergyBeam className="w-full h-full scale-110" projectId="hRFfUymDGOHwtFe7evR2" />
+                 )}
+              </div>
+            </div>
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="relative z-20 text-[13px] sm:text-xl md:text-2xl lg:text-3xl font-cinzel font-black tracking-[0.05em] leading-snug max-w-2xl mx-auto uppercase px-4">
+              <span className="text-aura-gradient block">{UI_TEXT.heroTitle}</span>
+            </motion.h1>
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-10 font-mystiqua px-6">{UI_TEXT.heroSubtitle}</motion.p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 md:gap-5">
+            <GradientButton variant="prismatic" onClick={() => navigate('/library')} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
+              <ArrowRight size={14} /> {UI_TEXT.exploreLibrary}
             </GradientButton>
-            <GradientButton 
-              variant="secondary"
-              onClick={() => {
-                const el = document.getElementById('featured');
-                el?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-6 py-3 w-full sm:w-auto border-white/5"
-            >
-              <BookOpen size={14} /> {t.viewSelection}
+            <GradientButton variant="secondary" onClick={() => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
+              <BookOpen size={12} /> {UI_TEXT.viewSelection}
             </GradientButton>
           </div>
         </div>
       </section>
 
-      {/* Featured Section */}
-      <section id="featured" className="py-12 md:py-20 container mx-auto px-4">
-        <div className="mb-10 md:mb-16 text-center lg:text-left">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 md:gap-6">
-            <div>
-              <h2 className="text-3xl md:text-5xl font-cinzel font-bold text-white mb-2 md:mb-4">
-                {t.featuredTitle}
-              </h2>
-              <p className="text-slate-400 text-[10px] md:text-sm tracking-[0.3em] uppercase">
-                {t.featuredSubtitle}
-              </p>
-            </div>
-            <div className="h-px flex-1 bg-gradient-to-r from-purple-500/50 to-transparent hidden lg:block mx-10 mb-5"></div>
-          </div>
+      <section id="featured" className="pt-6 md:pt-12 pb-20 md:pb-28 container mx-auto px-4 relative">
+        <div className="mb-8 md:mb-16 text-center">
+          <h2 className="text-lg md:text-3xl font-cinzel font-bold text-white mb-4 tracking-wider uppercase">{UI_TEXT.featuredTitle}</h2>
+          <p className="text-magenta-400 text-[8px] md:text-xs tracking-[0.4em] uppercase font-black">{UI_TEXT.featuredSubtitle}</p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredEbooks.map((ebook) => (
-            <motion.div
-              key={ebook.id}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <LuminousCard onClick={() => navigate(`/ebook/${ebook.id}`)}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
+          {featuredEbooks.map((ebook, i) => (
+            <motion.div key={ebook.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
+              <LuminousCard onClick={() => navigate(`/ebook/${ebook.id}`)} className="h-full">
                 <div className="aspect-[3/4] overflow-hidden relative">
-                  <img src={ebook.image} alt={ebook.title} className="w-full h-full object-cover" />
-                  
-                  {/* Promo Badge */}
+                  <img src={ebook.image} alt={ebook.title} className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
                   {ebook.isPromo && (
-                    <div className="absolute top-4 left-4 z-20 bg-rose-600 shadow-[0_0_15px_rgba(225,29,72,0.5)] px-3 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5">
+                    <div className="absolute top-4 left-4 z-20 bg-rose-600/90 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5">
                       <Tag size={10} className="text-white fill-current" />
-                      <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white">Promo</span>
+                      <span className="text-[8px] font-black uppercase text-white">Promo</span>
                     </div>
                   )}
                 </div>
-                <div className="p-6">
-                  <div className="text-[10px] text-purple-400 font-bold mb-2 uppercase tracking-widest">{ebook.category}</div>
-                  <h3 className="text-xl font-cinzel font-bold mb-4 line-clamp-1">{ebook.title}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">{ebook.promoPrice}€</span>
-                    <GradientButton className="px-4 py-2 text-[10px]">{t.discover}</GradientButton>
+                <div className="p-8">
+                  <div className="text-[8px] text-cyan-400 font-black mb-3 uppercase tracking-[0.3em] flex items-center gap-2">
+                    <span className="w-6 h-px bg-cyan-500/50"></span>{ebook.category}
+                  </div>
+                  <h3 className="text-lg font-cinzel font-bold mb-6 line-clamp-1 text-white">{ebook.title}</h3>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-col">
+                      <span className="text-xl text-price-gradient">{ebook.promoPrice.toFixed(2)}€</span>
+                      <span className="text-[10px] text-slate-500 line-through">{ebook.officialPrice.toFixed(2)}€</span>
+                    </div>
+                    <GradientButton variant="prismatic" className="px-6 py-3 text-[11px] md:text-xs uppercase flex items-center gap-2">
+                      <Sparkles size={14} />{UI_TEXT.discover}
+                    </GradientButton>
                   </div>
                 </div>
               </LuminousCard>
@@ -168,24 +122,13 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials (Parables) */}
-      <section className="py-20 bg-slate-950/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-cinzel font-bold mb-4 text-white tracking-wide">{t.testimonialsTitle}</h2>
-            <div className="h-0.5 w-16 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-6 rounded-full" />
-            <p className="text-slate-500 uppercase tracking-[0.3em] text-[10px] md:text-xs">{t.testimonialsSubtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+      <section className="py-24 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h2 className="text-2xl md:text-4xl font-cinzel font-black mb-6 text-white uppercase">{UI_TEXT.testimonialsTitle}</h2>
+          <p className="text-cyan-500 uppercase tracking-[0.4em] text-[10px] font-black mb-16">{UI_TEXT.testimonialsSubtitle}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-20">
             {testimonials.map((testi, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2 }}>
                 <TestimonialCard {...testi} />
               </motion.div>
             ))}

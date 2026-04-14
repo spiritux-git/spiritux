@@ -16,6 +16,7 @@ interface GlowingEffectProps {
   disabled?: boolean;
   movementDuration?: number;
   borderWidth?: number;
+  static?: boolean;
 }
 
 const GlowingEffect = memo(
@@ -30,6 +31,7 @@ const GlowingEffect = memo(
     movementDuration = 2,
     borderWidth = 1,
     disabled = true,
+    static: isStatic = false,
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const lastPosition = useRef({ x: 0, y: 0 });
@@ -37,7 +39,7 @@ const GlowingEffect = memo(
 
     const handleMove = useCallback(
       (e?: MouseEvent | { x: number; y: number }) => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || isStatic) return;
 
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
@@ -96,11 +98,25 @@ const GlowingEffect = memo(
           });
         });
       },
-      [inactiveZone, proximity, movementDuration]
+      [inactiveZone, proximity, movementDuration, isStatic]
     );
 
     useEffect(() => {
       if (disabled) return;
+
+      if (isStatic) {
+        const controls = animate(0, 360, {
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear",
+          onUpdate: (value) => {
+            if (containerRef.current) {
+              containerRef.current.style.setProperty("--start", String(value));
+            }
+          },
+        });
+        return () => controls.stop();
+      }
 
       const handleScroll = () => handleMove();
       const handlePointerMove = (e: PointerEvent) => handleMove({ x: e.clientX, y: e.clientY });
@@ -117,7 +133,7 @@ const GlowingEffect = memo(
         window.removeEventListener("scroll", handleScroll);
         document.body.removeEventListener("pointermove", handlePointerMove);
       };
-    }, [handleMove, disabled]);
+    }, [handleMove, disabled, isStatic]);
 
     return (
       <>
@@ -136,13 +152,13 @@ const GlowingEffect = memo(
               "--blur": `${blur}px`,
               "--spread": spread,
               "--start": "0",
-              "--active": "0",
+              "--active": isStatic ? "1" : "0",
               "--glowingeffect-border-width": `${borderWidth}px`,
               "--repeating-conic-gradient-times": "5",
               "--gradient":
                 variant === "white"
                   ? `repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
+                  from calc(var(--start) * 1deg) at 50% 50%,
                   var(--black),
                   var(--black) calc(25% / var(--repeating-conic-gradient-times))
                 )`
@@ -151,7 +167,7 @@ const GlowingEffect = memo(
                 radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
                 radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
                 repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
+                  from calc(var(--start) * 1deg) at 50% 50%,
                   #dd7bbb 0%,
                   #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
                   #5a922c calc(50% / var(--repeating-conic-gradient-times)), 
@@ -178,7 +194,9 @@ const GlowingEffect = memo(
               "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
               "after:[mask-clip:padding-box,border-box]",
               "after:[mask-composite:intersect]",
-              "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
+              isStatic 
+                ? "after:[mask-image:linear-gradient(#fff,#fff),linear-gradient(#fff,#fff)]"
+                : "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
             )}
           />
         </div>

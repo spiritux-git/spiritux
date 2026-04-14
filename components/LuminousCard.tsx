@@ -28,6 +28,7 @@ export const LuminousCard: React.FC<Props> = ({ children, className = "", onClic
         proximity={64}
         inactiveZone={0.01}
         borderWidth={2}
+        static={true}
       />
       
       {/* Contenu de la carte avec un fond sombre semi-transparent */}
