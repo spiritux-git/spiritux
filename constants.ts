@@ -114,7 +114,7 @@ export const UI_TEXT = {
   backToHome: 'Retour à l\'accueil',
   backToLibrary: 'Retour à la bibliothèque',
   copyright: 'TOUS DROITS RÉSERVÉS "SPIRITUX".',
-  heroSparkle: 'Le Sanctuaire du savoir spirituel',
+  heroSparkle: 'Le Sanctuaire du savoir',
   heroTitle: 'Plongez au Cœur des Sagesses Sacrées',
   heroSubtitle: 'Découvrez les secrets de l\'univers à travers nos manuscrits sacrés. Un voyage initiatique pour revitaliser votre âme et éclairer votre chemin.',
   exploreLibrary: 'Explorer la Bibliothèque',

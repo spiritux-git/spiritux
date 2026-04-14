@@ -45,12 +45,12 @@ export const Home: React.FC = () => {
   return (
     <div className="bg-transparent min-h-screen text-slate-100 relative">
       <CelestialParticles />
-      <section className="relative pt-24 md:pt-36 pb-0 px-4 overflow-hidden">
+      <section className="relative pt-24 md:pt-36 pb-12 md:pb-20 px-4 overflow-hidden">
         <div className="container mx-auto text-center relative z-10">
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-[6px] md:text-[8px] font-black uppercase tracking-[0.4em] mb-4 backdrop-blur-md">
-            <Sparkles size={12} className="animate-pulse" /> {UI_TEXT.heroSparkle}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] mb-8 md:mb-12 backdrop-blur-md">
+            <Sparkles size={16} className="animate-pulse" /> {UI_TEXT.heroSparkle}
           </motion.div>
-          <div className="relative mb-2 py-2 md:py-4">
+          <div className="relative mb-6 md:mb-10 py-2 md:py-4">
             <div className="absolute inset-0 z-0 opacity-80 pointer-events-none flex items-center justify-center">
               <div className="w-full h-full max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] md:rounded-[3rem] border border-white/10 relative">
                  {config.homeVideoUrl ? (
@@ -74,16 +74,13 @@ export const Home: React.FC = () => {
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-10 font-mystiqua px-6">{UI_TEXT.heroSubtitle}</motion.p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 md:gap-5">
             <GradientButton variant="prismatic" onClick={() => navigate('/library')} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
-              <ArrowRight size={14} /> {UI_TEXT.exploreLibrary}
-            </GradientButton>
-            <GradientButton variant="secondary" onClick={() => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
-              <BookOpen size={12} /> {UI_TEXT.viewSelection}
+              <BookOpen size={14} /> {UI_TEXT.exploreLibrary}
             </GradientButton>
           </div>
         </div>
       </section>
 
-      <section id="featured" className="pt-6 md:pt-12 pb-20 md:pb-28 container mx-auto px-4 relative">
+      <section id="featured" className="pt-20 md:pt-32 pb-20 md:pb-28 container mx-auto px-4 relative">
         <div className="mb-8 md:mb-16 text-center">
           <h2 className="text-lg md:text-3xl font-cinzel font-bold text-white mb-4 tracking-wider uppercase">{UI_TEXT.featuredTitle}</h2>
           <p className="text-magenta-400 text-[8px] md:text-xs tracking-[0.4em] uppercase font-black">{UI_TEXT.featuredSubtitle}</p>
