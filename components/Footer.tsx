@@ -1,23 +1,24 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFirebase } from '../context/FirebaseContext';
 import { UI_TEXT } from '../constants';
 import { Facebook, Instagram, MessageCircle, Mail } from 'lucide-react';
+import { GlowingEffect } from './GlowingEffect';
 
-const XIcon = ({ size = 16, className = "" }) => (
+const XIcon = memo(({ size = 16, className = "" }: { size?: number, className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.294 19.497h2.039L6.486 3.24H4.298l13.31 17.41z" />
   </svg>
-);
+));
 
-const TikTokIcon = ({ size = 16, className = "" }) => (
+const TikTokIcon = memo(({ size = 16, className = "" }: { size?: number, className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.6-4.12-1.31a6.34 6.34 0 0 1-1.88-1.55c-.05 2.52.01 5.04-.01 7.56 0 1.34-.36 2.68-1.05 3.82-.7 1.17-1.74 2.14-3 2.75-1.25.61-2.67.85-4.05.7-1.39-.16-2.73-.72-3.82-1.59C3.12 19.14 2.21 17.61 2.01 15.9c-.21-1.71.21-3.5 1.19-4.96.98-1.47 2.45-2.54 4.11-3.01 1.66-.48 3.48-.3 5-.48V11.5c-1.62.15-3.23.83-4.32 2.04-1.08 1.21-1.48 2.91-1.11 4.49.37 1.58 1.63 2.87 3.2 3.28 1.58.41 3.32.01 4.54-.99 1.23-.99 1.83-2.58 1.77-4.16-.01-5.38.01-10.76-.01-16.14z" />
   </svg>
-);
+));
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC = memo(() => {
   const navigate = useNavigate();
   const { config } = useFirebase();
   const [clickCount, setClickCount] = useState(0);
@@ -57,8 +58,11 @@ export const Footer: React.FC = () => {
               onClick={handleLogoClick}
               className="flex items-center gap-3 group cursor-pointer w-fit"
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-purple-500/50 shadow-lg shadow-purple-500/10 group-hover:border-purple-400 transition-colors">
-                <img src={config.logo} alt="Spiritux" className="w-full h-full object-cover" />
+              <div className="relative w-10 h-10 overflow-visible rounded-full">
+                <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} static={true} className="z-[2]" />
+                <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 z-[1] group-hover:border-transparent transition-all duration-500 shadow-2xl group-hover:shadow-purple-500/20">
+                  <img src={config.logo} alt="Spiritux" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                </div>
               </div>
               <span className="text-2xl font-cinzel font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
                 Spiritux
@@ -138,4 +142,4 @@ export const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
+});

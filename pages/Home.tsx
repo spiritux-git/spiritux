@@ -52,20 +52,22 @@ export const Home: React.FC = () => {
           </motion.div>
           <div className="relative mb-6 md:mb-10 py-2 md:py-4">
             <div className="absolute inset-0 z-0 opacity-80 pointer-events-none flex items-center justify-center">
-              <div className="w-full h-full max-w-6xl mx-auto overflow-hidden rounded-[1.5rem] md:rounded-[3rem] border border-white/10 relative">
-                 {config.homeVideoUrl ? (
-                   <video 
-                     src={config.homeVideoUrl} 
-                     autoPlay 
-                     muted 
-                     loop 
-                     playsInline 
-                     className="w-full h-full object-cover opacity-40 scale-110"
-                   />
-                 ) : (
-                   <EnergyBeam className="w-full h-full scale-110" projectId="hRFfUymDGOHwtFe7evR2" />
-                 )}
-              </div>
+              <LuminousCard className="w-full h-full max-w-6xl mx-auto bg-transparent rounded-[1.5rem] md:rounded-[3rem]">
+                <div className="w-full h-full overflow-hidden relative">
+                   {config.homeVideoUrl ? (
+                     <video 
+                       src={config.homeVideoUrl} 
+                       autoPlay 
+                       muted 
+                       loop 
+                       playsInline 
+                       className="w-full h-full object-cover opacity-40 scale-110"
+                     />
+                   ) : (
+                     <EnergyBeam className="w-full h-full scale-110" projectId="hRFfUymDGOHwtFe7evR2" />
+                   )}
+                </div>
+              </LuminousCard>
             </div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="relative z-20 text-[13px] sm:text-xl md:text-2xl lg:text-3xl font-cinzel font-black tracking-[0.05em] leading-snug max-w-2xl mx-auto uppercase px-4">
               <span className="text-aura-gradient block">{UI_TEXT.heroTitle}</span>
@@ -90,7 +92,7 @@ export const Home: React.FC = () => {
             <motion.div key={ebook.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
               <LuminousCard onClick={() => navigate(`/ebook/${ebook.id}`)} className="h-full">
                 <div className="aspect-[3/4] overflow-hidden relative">
-                  <img src={ebook.image} alt={ebook.title} className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
+                  <img src={ebook.image} alt={ebook.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
                   {ebook.isPromo && (
                     <div className="absolute top-4 left-4 z-20 bg-rose-600/90 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5">
                       <Tag size={10} className="text-white fill-current" />

@@ -28,13 +28,23 @@ export const Library: React.FC = () => {
         </GradientButton>
         <h1 className="text-3xl md:text-5xl font-cinzel font-bold mb-6 md:mb-8">{UI_TEXT.libraryTitle}</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="relative flex-1 group w-full">
-            <Search className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-            <input type="text" placeholder={UI_TEXT.searchPlaceholder} value={search} onChange={(e) => setSearch(e.target.value)} className="w-full bg-slate-900/50 border border-white/10 rounded-full py-3 pl-12 pr-6 outline-none focus:border-purple-500/50 transition-all" />
-          </div>
-          <GradientButton variant="secondary" className="w-full md:w-auto px-8 py-4 border-white/5">
-            <SlidersHorizontal size={16} /> {UI_TEXT.filters}
-          </GradientButton>
+          <LuminousCard className="flex-1 w-full bg-transparent rounded-full">
+            <div className="relative group w-full">
+              <Search className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+              <input 
+                type="text" 
+                placeholder={UI_TEXT.searchPlaceholder} 
+                value={search} 
+                onChange={(e) => setSearch(e.target.value)} 
+                className="w-full bg-transparent border-none rounded-full py-3 pl-12 pr-6 outline-none transition-all" 
+              />
+            </div>
+          </LuminousCard>
+          <LuminousCard className="w-full md:w-auto bg-transparent rounded-full">
+            <button className="w-full md:w-auto px-8 py-4 flex items-center gap-2 text-slate-300 font-bold uppercase tracking-widest text-xs">
+              <SlidersHorizontal size={16} /> {UI_TEXT.filters}
+            </button>
+          </LuminousCard>
         </div>
       </div>
 
@@ -43,7 +53,7 @@ export const Library: React.FC = () => {
           <motion.div key={ebook.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} whileHover={{ y: -5 }} className="z-10">
             <LuminousCard onClick={() => navigate(`/ebook/${ebook.id}`)} className="h-full">
               <div className="aspect-[3/4] overflow-hidden relative">
-                <img src={ebook.image} alt={ebook.title} className="w-full h-full object-cover" />
+                <img src={ebook.image} alt={ebook.title} loading="lazy" className="w-full h-full object-cover" />
                 {ebook.isPromo && (
                   <div className="absolute top-3 left-3 z-20 bg-rose-600/90 px-2 py-1 rounded-lg flex items-center gap-1.5 shadow-lg">
                     <Tag size={10} className="text-white fill-current" />

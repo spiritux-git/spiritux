@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export const GradientButton: React.FC<Props> = ({ 
+export const GradientButton: React.FC<Props> = memo(({ 
   children, 
   onClick, 
   className = "", 
@@ -58,4 +58,4 @@ export const GradientButton: React.FC<Props> = ({
       <span className="relative z-10 flex items-center gap-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">{children}</span>
     </motion.button>
   );
-};
+});

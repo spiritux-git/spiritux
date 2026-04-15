@@ -1,12 +1,12 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, BookOpen, Mail } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
 import { GlowingEffect } from './GlowingEffect';
 import { UI_TEXT } from '../constants';
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC = memo(() => {
   const location = useLocation();
   const { config } = useFirebase();
   
@@ -21,9 +21,9 @@ export const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 md:gap-3 group cursor-pointer">
           <div className="relative w-10 h-10 md:w-14 md:h-14 overflow-visible rounded-full">
-            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} static={true} />
+            <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} static={true} className="z-[2]" />
             <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 z-[1] group-hover:border-transparent transition-all duration-500 shadow-2xl group-hover:shadow-purple-500/20">
-              <img src={config.logo} alt="Spiritux Logo" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img src={config.logo} alt="Spiritux Logo" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
           </div>
           <div className="flex flex-col">
@@ -60,4 +60,4 @@ export const Navbar: React.FC = () => {
       </div>
     </nav>
   );
-};
+});

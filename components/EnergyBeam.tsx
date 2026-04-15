@@ -20,6 +20,17 @@ const EnergyBeam: React.FC<EnergyBeamProps> = ({
     const scriptLoadedRef = useRef(false);
 
     useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                loadScript();
+                observer.disconnect();
+            }
+        }, { threshold: 0.1 });
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
         const loadScript = () => {
             if (scriptLoadedRef.current) return;
 
@@ -30,22 +41,16 @@ const EnergyBeam: React.FC<EnergyBeamProps> = ({
             script.onload = () => {
                 scriptLoadedRef.current = true;
                 if (window.UnicornStudio && containerRef.current) {
-                    console.log('Unicorn Studio loaded, initializing project...');
-                    // Initialize the Unicorn Studio project
                     window.UnicornStudio.init();
                 }
             };
 
             document.head.appendChild(script);
-
-            return () => {
-                if (script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
-            };
         };
 
-        loadScript();
+        return () => {
+            observer.disconnect();
+        };
     }, [projectId]);
 
     return (

@@ -104,7 +104,11 @@ const GlowingEffect = memo(
     useEffect(() => {
       if (disabled) return;
 
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
       if (isStatic) {
+        if (isMobile) return; // Disable continuous rotation on mobile for performance
+        
         const controls = animate(0, 360, {
           duration: 10,
           repeat: Infinity,
@@ -186,18 +190,18 @@ const GlowingEffect = memo(
         >
           <div
             className={cn(
-              "glow",
-              "rounded-[inherit]",
-              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
-              "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
-              "after:[background:var(--gradient)] after:[background-attachment:fixed]",
-              "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
-              "after:[mask-clip:padding-box,border-box]",
-              "after:[mask-composite:intersect]",
-              isStatic 
-                ? "after:[mask-image:linear-gradient(#fff,#fff),linear-gradient(#fff,#fff)]"
-                : "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
+              "rounded-[inherit] absolute inset-0",
+              "opacity-[var(--active)] transition-opacity duration-300"
             )}
+            style={{
+              padding: 'var(--glowingeffect-border-width)',
+              background: 'var(--gradient)',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'destination-out',
+              mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              maskComposite: 'exclude',
+              willChange: 'transform'
+            }}
           />
         </div>
       </>

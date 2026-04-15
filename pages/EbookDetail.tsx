@@ -75,7 +75,7 @@ export const EbookDetail: React.FC = () => {
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="lg:col-span-5">
           <LuminousCard className="shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
             <div className="relative overflow-hidden rounded-[15px]">
-              <img src={ebook.image} alt={ebook.title} className="w-full h-auto object-cover" />
+              <img src={ebook.image} alt={ebook.title} loading="lazy" className="w-full h-auto object-cover" />
               {ebook.isPromo && (
                 <div className="absolute -top-3 -right-3 bg-gradient-to-br from-amber-400 to-orange-600 text-white font-black py-3 px-4 rounded-xl shadow-xl z-20 text-[8px] uppercase flex flex-col items-center">
                   <span>OFFRE</span><span className="text-sm mt-0.5">SACRÉE</span>
@@ -127,24 +127,26 @@ export const EbookDetail: React.FC = () => {
             </div>
           </LuminousCard>
 
-          <div className="space-y-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-500/10 rounded-lg">
-                  <BookOpen className="text-amber-500" size={16} />
+          <LuminousCard className="bg-transparent">
+            <div className="p-6 md:p-8 space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-500/10 rounded-lg">
+                    <BookOpen className="text-amber-500" size={16} />
+                  </div>
+                  <h2 className="text-[10px] md:text-xs font-cinzel font-bold text-slate-400 uppercase tracking-[0.3em]">
+                    {UI_TEXT.manuscriptEssence}
+                  </h2>
                 </div>
-                <h2 className="text-[10px] md:text-xs font-cinzel font-bold text-slate-400 uppercase tracking-[0.3em]">
-                  {UI_TEXT.manuscriptEssence}
-                </h2>
+                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={handleReadSummary} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
+                  {isAudioLoading ? <Loader2 size={18} className="animate-spin text-amber-500" /> : isPlaying ? <VolumeX size={18} className="text-amber-500" /> : <Volume2 size={18} className="text-amber-500" />}
+                </motion.button>
               </div>
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={handleReadSummary} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
-                {isAudioLoading ? <Loader2 size={18} className="animate-spin text-amber-500" /> : isPlaying ? <VolumeX size={18} className="text-amber-500" /> : <Volume2 size={18} className="text-amber-500" />}
-              </motion.button>
+              <div className="text-base md:text-lg text-slate-300 leading-relaxed font-mystiqua text-justify">
+                 <span className="float-left mr-3 mt-1 text-3xl md:text-4xl font-cinzel font-black text-gold-gradient leading-[0.8]">{ebook.summary.charAt(0)}</span>{ebook.summary.slice(1)}
+              </div>
             </div>
-            <div className="text-base md:text-lg text-slate-300 leading-relaxed font-mystiqua text-justify">
-               <span className="float-left mr-3 mt-1 text-3xl md:text-4xl font-cinzel font-black text-gold-gradient leading-[0.8]">{ebook.summary.charAt(0)}</span>{ebook.summary.slice(1)}
-            </div>
-          </div>
+          </LuminousCard>
         </motion.div>
       </div>
     </div>

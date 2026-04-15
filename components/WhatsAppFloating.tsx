@@ -1,11 +1,10 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
-import { storage } from '../services/storage';
 import { useFirebase } from '../context/FirebaseContext';
 
-export const WhatsAppFloating: React.FC = () => {
+export const WhatsAppFloating: React.FC = memo(() => {
   const { config } = useFirebase();
   const whatsappNumber = config.socialLinks?.whatsapp;
 
@@ -31,4 +30,4 @@ export const WhatsAppFloating: React.FC = () => {
       </span>
     </motion.a>
   );
-};
+});

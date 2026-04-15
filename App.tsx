@@ -1,17 +1,25 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { Home } from './pages/Home';
-import { Library } from './pages/Library';
-import { Admin } from './pages/Admin';
-import { EbookDetail } from './pages/EbookDetail';
-import { Contact } from './pages/Contact';
 import { storage } from './services/storage';
 import { GradFlow } from './components/GradFlow';
 import { WhatsAppFloating } from './components/WhatsAppFloating';
 import { FirebaseProvider, useFirebase } from './context/FirebaseContext';
+
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
+const Library = lazy(() => import('./pages/Library').then(m => ({ default: m.Library })));
+const Admin = lazy(() => import('./pages/Admin').then(m => ({ default: m.Admin })));
+const EbookDetail = lazy(() => import('./pages/EbookDetail').then(m => ({ default: m.EbookDetail })));
+const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
+
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-[#0f0720]">
+    <div className="w-12 h-12 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin" />
+  </div>
+);
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -61,17 +69,19 @@ const App: React.FC = () => {
       <Router>
         <FacebookPixel />
         <ScrollToTop />
-        <div className="min-h-screen relative text-slate-100 selection:bg-purple-500/30">
+        <div className="min-h-screen relative text-slate-100 selection:bg-purple-500/30 overflow-x-hidden">
           <GradFlow />
           <Navbar />
-          <main className="relative z-10">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/library" element={<Library />} />
-              <Route path="/ebook/:id" element={<EbookDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
+          <main className="relative z-10" style={{ contentVisibility: 'auto' }}>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/library" element={<Library />} />
+                <Route path="/ebook/:id" element={<EbookDetail />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </Suspense>
           </main>
           <Footer />
           <WhatsAppFloating />

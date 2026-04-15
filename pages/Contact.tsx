@@ -6,6 +6,7 @@ import { useFirebase } from '../context/FirebaseContext';
 import { GradientButton } from '../components/GradientButton';
 import { LuminousCard } from '../components/LuminousCard';
 import { CelestialParticles } from '../components/CelestialParticles';
+import { GlowingEffect } from '../components/GlowingEffect';
 
 export const Contact: React.FC = () => {
   const { config } = useFirebase();
@@ -55,12 +56,15 @@ export const Contact: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="flex justify-center mb-8"
           >
-            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
-              <img 
-                src={config.logo} 
-                alt="Spiritux Logo" 
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-24 h-24 overflow-visible rounded-full">
+              <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} static={true} className="z-[2]" />
+              <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 z-[1] shadow-2xl">
+                <img 
+                  src={config.logo} 
+                  alt="Spiritux Logo" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
           </motion.div>
           
@@ -103,7 +107,7 @@ export const Contact: React.FC = () => {
                         type="text" 
                         name="name" 
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base md:text-sm text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
                         placeholder="Jean Dupont"
                       />
                     </div>
@@ -113,7 +117,7 @@ export const Contact: React.FC = () => {
                         type="email" 
                         name="email" 
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base md:text-sm text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
                         placeholder="jean@exemple.com"
                       />
                     </div>
@@ -124,7 +128,7 @@ export const Contact: React.FC = () => {
                       type="text" 
                       name="subject" 
                       required
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base md:text-sm text-white focus:outline-none focus:border-cyan-500/50 transition-colors"
                       placeholder="Question sur un manuscrit"
                     />
                   </div>
@@ -134,7 +138,7 @@ export const Contact: React.FC = () => {
                       name="message" 
                       required
                       rows={5}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base md:text-sm text-white focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
                       placeholder="Votre message ici..."
                     />
                   </div>

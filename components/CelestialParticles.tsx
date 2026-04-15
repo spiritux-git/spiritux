@@ -1,10 +1,13 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 
-export const CelestialParticles: React.FC = () => {
+export const CelestialParticles: React.FC = memo(() => {
   const shards = useMemo(() => {
-    return Array.from({ length: 40 }).map((_, i) => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const count = isMobile ? 15 : 40;
+    
+    return Array.from({ length: count }).map((_, i) => {
       const colors = ['#ff00ff', '#00ffff', '#f59e0b', '#8b5cf6'];
       return {
         id: i,
@@ -33,10 +36,11 @@ export const CelestialParticles: React.FC = () => {
             left: `${s.x}%`,
             top: `${s.y}%`,
             backgroundColor: s.color,
-            clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)', // Forme cristalline
+            clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
             opacity: s.opacity,
             boxShadow: `0 0 20px ${s.color}`,
             transformStyle: 'preserve-3d',
+            willChange: 'transform, opacity',
           }}
           animate={{
             y: [0, -100, 0],
@@ -55,4 +59,6 @@ export const CelestialParticles: React.FC = () => {
       ))}
     </div>
   );
-};
+});
+
+CelestialParticles.displayName = 'CelestialParticles';

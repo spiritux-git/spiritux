@@ -7,6 +7,7 @@ import { firebaseService } from '../services/firebaseService';
 import { loginWithGoogle, logout } from '../firebase';
 import { Ebook, SiteConfig } from '../types';
 import { GradientButton } from '../components/GradientButton';
+import { LuminousCard } from '../components/LuminousCard';
 import { UI_TEXT } from '../constants';
 
 export const Admin: React.FC = () => {
@@ -88,17 +89,19 @@ export const Admin: React.FC = () => {
   if (!user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#02040a] p-4">
-        <div className="p-10 w-full max-w-md bg-slate-900/50 border border-white/5 rounded-3xl text-center">
-            <Lock className="text-purple-400 mx-auto mb-6" size={32} />
-            <h2 className="text-2xl font-cinzel font-bold text-white uppercase tracking-widest mb-6">Portail Admin</h2>
-            <p className="text-slate-400 mb-10 font-mystiqua">Veuillez vous connecter avec votre compte administrateur.</p>
-            <GradientButton onClick={loginWithGoogle} className="w-full py-4">
-              Se connecter avec Google
-            </GradientButton>
-            {user && !isAdmin && (
-              <p className="text-red-500 mt-6 text-xs font-bold uppercase tracking-widest">Accès refusé : {user.email}</p>
-            )}
-        </div>
+        <LuminousCard className="w-full max-w-md bg-transparent">
+          <div className="p-10 text-center">
+              <Lock className="text-purple-400 mx-auto mb-6" size={32} />
+              <h2 className="text-2xl font-cinzel font-bold text-white uppercase tracking-widest mb-6">Portail Admin</h2>
+              <p className="text-slate-400 mb-10 font-mystiqua">Veuillez vous connecter avec votre compte administrateur.</p>
+              <GradientButton onClick={loginWithGoogle} className="w-full py-4">
+                Se connecter avec Google
+              </GradientButton>
+              {user && !isAdmin && (
+                <p className="text-red-500 mt-6 text-xs font-bold uppercase tracking-widest">Accès refusé : {user.email}</p>
+              )}
+          </div>
+        </LuminousCard>
       </div>
     );
   }
@@ -141,130 +144,134 @@ export const Admin: React.FC = () => {
         </div>
 
         {activeTab === 'catalogue' ? (
-          <div className="bg-[#0a0c14] border border-white/5 rounded-[2.5rem] p-8 md:p-10">
-              <div className="flex justify-between items-center mb-12">
-                <div className="flex items-center gap-4"><ImageIcon size={20} className="text-blue-400" /><h2 className="text-xl font-cinzel font-bold text-white uppercase">Catalogue</h2></div>
-                <GradientButton onClick={addEbook} variant="secondary" className="px-5 py-2.5">Nouveau Livre</GradientButton>
-              </div>
-              <div className="space-y-3">
-                {ebooks.map((ebook) => (
-                  <div key={ebook.id} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.01] border border-transparent hover:border-white/5 group">
-                    <img src={ebook.image} className="w-12 h-12 rounded-lg object-cover" />
-                    <div className="flex-1 truncate">
-                      <h3 className="font-cinzel font-bold text-sm text-white">{ebook.title}</h3>
-                      <p className="text-[10px] text-slate-500 uppercase tracking-wider">{ebook.category}</p>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[9px] uppercase font-black text-slate-600">Vedette</span>
-                        <button 
-                          onClick={() => toggleFeatured(ebook.id)}
-                          className={`w-12 h-6 rounded-full relative transition-colors duration-300 ${ebook.isFeatured ? 'bg-emerald-500' : 'bg-slate-800'}`}
-                        >
-                          <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ${ebook.isFeatured ? 'left-7' : 'left-1'}`} />
-                        </button>
+          <LuminousCard className="bg-transparent rounded-[2.5rem]">
+            <div className="p-8 md:p-10">
+                <div className="flex justify-between items-center mb-12">
+                  <div className="flex items-center gap-4"><ImageIcon size={20} className="text-blue-400" /><h2 className="text-xl font-cinzel font-bold text-white uppercase">Catalogue</h2></div>
+                  <GradientButton onClick={addEbook} variant="secondary" className="px-5 py-2.5">Nouveau Livre</GradientButton>
+                </div>
+                <div className="space-y-3">
+                  {ebooks.map((ebook) => (
+                    <div key={ebook.id} className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.01] border border-transparent hover:border-white/5 group">
+                      <img src={ebook.image} className="w-12 h-12 rounded-lg object-cover" />
+                      <div className="flex-1 truncate">
+                        <h3 className="font-cinzel font-bold text-sm text-white">{ebook.title}</h3>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-wider">{ebook.category}</p>
                       </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => setEditingEbook(ebook)} className="p-2.5 text-slate-400 hover:text-white bg-white/5 rounded-lg"><Pencil size={18} /></button>
-                        <button onClick={() => {
-                          if (window.confirm('Supprimer ce manuscrit ?')) {
-                            firebaseService.deleteEbook(ebook.id);
-                            setStatus('Supprimé');
-                            setTimeout(() => setStatus(null), 2000);
-                          }
-                        }} className="p-2.5 text-slate-700 hover:text-red-500 bg-red-500/5 rounded-lg"><Trash2 size={18} /></button>
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[9px] uppercase font-black text-slate-600">Vedette</span>
+                          <button 
+                            onClick={() => toggleFeatured(ebook.id)}
+                            className={`w-12 h-6 rounded-full relative transition-colors duration-300 ${ebook.isFeatured ? 'bg-emerald-500' : 'bg-slate-800'}`}
+                          >
+                            <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ${ebook.isFeatured ? 'left-7' : 'left-1'}`} />
+                          </button>
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => setEditingEbook(ebook)} className="p-2.5 text-slate-400 hover:text-white bg-white/5 rounded-lg"><Pencil size={18} /></button>
+                          <button onClick={() => {
+                            if (window.confirm('Supprimer ce manuscrit ?')) {
+                              firebaseService.deleteEbook(ebook.id);
+                              setStatus('Supprimé');
+                              setTimeout(() => setStatus(null), 2000);
+                            }
+                          }} className="p-2.5 text-slate-700 hover:text-red-500 bg-red-500/5 rounded-lg"><Trash2 size={18} /></button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-          </div>
+                  ))}
+                </div>
+            </div>
+          </LuminousCard>
         ) : (
-          <div className="bg-[#0a0c14] border border-white/5 rounded-[2.5rem] p-8 md:p-10">
-            <div className="flex items-center gap-4 mb-12">
-              <Settings size={20} className="text-purple-400" />
-              <h2 className="text-xl font-cinzel font-bold text-white uppercase">Configuration Générale</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <ImageIcon size={14} /> URL du Logo
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.logo} 
-                    onChange={e => setConfig({...config, logo: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <Star size={14} /> URL du Favicon
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.favicon} 
-                    onChange={e => setConfig({...config, favicon: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <Video size={14} /> URL Vidéo Accueil
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.homeVideoUrl} 
-                    onChange={e => setConfig({...config, homeVideoUrl: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
-                </div>
+          <LuminousCard className="bg-transparent rounded-[2.5rem]">
+            <div className="p-8 md:p-10">
+              <div className="flex items-center gap-4 mb-12">
+                <Settings size={20} className="text-purple-400" />
+                <h2 className="text-xl font-cinzel font-bold text-white uppercase">Configuration Générale</h2>
               </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <ImageIcon size={14} /> URL du Logo
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.logo} 
+                      onChange={e => setConfig({...config, logo: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <Star size={14} /> URL du Favicon
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.favicon} 
+                      onChange={e => setConfig({...config, favicon: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <Video size={14} /> URL Vidéo Accueil
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.homeVideoUrl} 
+                      onChange={e => setConfig({...config, homeVideoUrl: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
+                </div>
 
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <MessageCircle size={14} /> Numéro WhatsApp
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.socialLinks?.whatsapp} 
-                    onChange={e => setConfig({
-                      ...config, 
-                      socialLinks: { ...config.socialLinks!, whatsapp: e.target.value }
-                    })}
-                    placeholder="+33612345678"
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <Mail size={14} /> Endpoint Formspree
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.formspreeEndpoint} 
-                    onChange={e => setConfig({...config, formspreeEndpoint: e.target.value})}
-                    placeholder="https://formspree.io/f/your-id"
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
-                    <LayoutGrid size={14} /> ID Pixel Facebook
-                  </label>
-                  <input 
-                    type="text" 
-                    value={config.fbPixelId} 
-                    onChange={e => setConfig({...config, fbPixelId: e.target.value})}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
-                  />
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <MessageCircle size={14} /> Numéro WhatsApp
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.socialLinks?.whatsapp} 
+                      onChange={e => setConfig({
+                        ...config, 
+                        socialLinks: { ...config.socialLinks!, whatsapp: e.target.value }
+                      })}
+                      placeholder="+33612345678"
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <Mail size={14} /> Endpoint Formspree
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.formspreeEndpoint} 
+                      onChange={e => setConfig({...config, formspreeEndpoint: e.target.value})}
+                      placeholder="https://formspree.io/f/your-id"
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-2">
+                      <LayoutGrid size={14} /> ID Pixel Facebook
+                    </label>
+                    <input 
+                      type="text" 
+                      value={config.fbPixelId} 
+                      onChange={e => setConfig({...config, fbPixelId: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white outline-none focus:border-purple-500/50 transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </LuminousCard>
         )}
       </div>
 

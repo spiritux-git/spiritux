@@ -22,7 +22,7 @@ export const INITIAL_EBOOKS: Ebook[] = [
     title: 'Les Mystères de l\'Alchimie',
     description: 'Transformez le plomb de votre âme en l\'or pur de la conscience universelle.',
     summary: 'Explorez l\'history et les pratiques de l\'alchimie spirituelle. Un voyage intérieur pour purifier l\'esprit et atteindre un état de paix profonde à travers des rituels et des réflexions philosophiques.',
-    image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?auto=format&fit=crop&q=80&w=600&h=800',
+    image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=600&h=800',
     officialPrice: 39.99,
     promoPrice: 24.99,
     chariowLink: 'https://chariow.com/p/alchimie-sacree',
