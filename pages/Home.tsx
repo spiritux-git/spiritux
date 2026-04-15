@@ -45,35 +45,36 @@ export const Home: React.FC = () => {
   return (
     <div className="bg-transparent min-h-screen text-slate-100 relative">
       <CelestialParticles />
-      <section className="relative pt-24 md:pt-36 pb-12 md:pb-20 px-4 overflow-hidden">
-        <div className="container mx-auto text-center relative z-10">
+      <section className="relative pt-24 md:pt-48 pb-20 md:pb-32 px-4 overflow-hidden min-h-[80vh] flex items-center justify-center">
+        {/* Full Background Video/Energy Beam */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {config.homeVideoUrl ? (
+            <video 
+              src={config.homeVideoUrl} 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full">
+              <EnergyBeam className="w-full h-full" projectId="hRFfUymDGOHwtFe7evR2" />
+            </div>
+          )}
+        </div>
+
+        <div className="container mx-auto text-center relative z-30">
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] mb-8 md:mb-12 backdrop-blur-md">
             <Sparkles size={16} className="animate-pulse" /> {UI_TEXT.heroSparkle}
           </motion.div>
-          <div className="relative mb-6 md:mb-10 py-2 md:py-4">
-            <div className="absolute inset-0 z-0 opacity-80 pointer-events-none flex items-center justify-center">
-              <LuminousCard className="w-full h-full max-w-6xl mx-auto bg-transparent rounded-[1.5rem] md:rounded-[3rem]">
-                <div className="w-full h-full overflow-hidden relative">
-                   {config.homeVideoUrl ? (
-                     <video 
-                       src={config.homeVideoUrl} 
-                       autoPlay 
-                       muted 
-                       loop 
-                       playsInline 
-                       className="w-full h-full object-cover opacity-40 scale-110"
-                     />
-                   ) : (
-                     <EnergyBeam className="w-full h-full scale-110" projectId="hRFfUymDGOHwtFe7evR2" />
-                   )}
-                </div>
-              </LuminousCard>
-            </div>
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="relative z-20 text-[13px] sm:text-xl md:text-2xl lg:text-3xl font-cinzel font-black tracking-[0.05em] leading-snug max-w-2xl mx-auto uppercase px-4">
-              <span className="text-aura-gradient block">{UI_TEXT.heroTitle}</span>
+          
+          <div className="relative mb-6 md:mb-10">
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="relative z-20 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-cinzel font-black tracking-[0.05em] leading-tight max-w-4xl mx-auto uppercase px-4">
+              <span className="text-aura-gradient block drop-shadow-[0_0_30px_rgba(147,51,234,0.5)]">{UI_TEXT.heroTitle}</span>
             </motion.h1>
           </div>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-10 font-mystiqua px-6">{UI_TEXT.heroSubtitle}</motion.p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-16 md:mb-24 font-mystiqua px-6">{UI_TEXT.heroSubtitle}</motion.p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 md:gap-5">
             <GradientButton variant="prismatic" onClick={() => navigate('/library')} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
               <BookOpen size={14} /> {UI_TEXT.exploreLibrary}
