@@ -119,7 +119,7 @@ export const UI_TEXT = {
   heroSubtitle: 'Découvrez les secrets de l\'univers à travers nos manuscrits sacrés. Un voyage initiatique pour revitaliser votre âme et éclairer votre chemin.',
   exploreLibrary: 'Explorer la Bibliothèque',
   viewSelection: 'Voir la sélection',
-  libraryTitle: 'La Bibliothèque Céleste',
+  libraryTitle: 'Bibliothèque',
   searchPlaceholder: 'Rechercher une sagesse...',
   filters: 'Filtres',
   noResults: 'Aucune sagesse trouvée.',

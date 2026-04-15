@@ -12,15 +12,12 @@ import { CelestialParticles } from '../components/CelestialParticles';
 
 const TestimonialCard = ({ text, book }: any) => (
   <LuminousCard className="h-full">
-    <div className="p-10 flex flex-col h-full relative group">
-      <Quote className="absolute top-8 right-8 text-cyan-500/5 w-20 h-20 transition-transform duration-1000 group-hover:scale-125 group-hover:rotate-12" />
+    <div className="p-6 md:p-8 flex flex-col h-full relative group">
+      <Quote className="absolute top-6 right-6 text-cyan-500/5 w-12 h-12 transition-transform duration-1000 group-hover:scale-125 group-hover:rotate-12" />
       <div className="flex-1">
-        <div className="flex gap-1 mb-6">
-          {[...Array(5)].map((_, i) => (<Star key={i} size={10} className="text-cyan-400 fill-cyan-400/30" />))}
-        </div>
-        <p className="text-lg md:text-2xl text-slate-100 italic mb-10 leading-relaxed font-mystiqua tracking-wide relative z-10">"{text}"</p>
+        <p className="text-base md:text-lg text-slate-100 italic mb-6 leading-relaxed font-mystiqua tracking-wide relative z-10">"{text}"</p>
       </div>
-      <div className="pt-8 border-t border-white/10 flex items-center gap-5">
+      <div className="pt-6 border-t border-white/10 flex items-center gap-4">
         <div className="w-1.5 h-10 bg-gradient-to-b from-cyan-400 via-magenta-500 to-amber-500 rounded-full" />
         <div className="flex flex-col">
           <span className="text-[11px] md:text-[12px] font-black text-white uppercase tracking-[0.5em]">{book}</span>
@@ -45,7 +42,7 @@ export const Home: React.FC = () => {
   return (
     <div className="bg-transparent min-h-screen text-slate-100 relative">
       <CelestialParticles />
-      <section className="relative pt-24 md:pt-48 pb-20 md:pb-32 px-4 overflow-hidden min-h-[80vh] flex items-center justify-center">
+      <section className="relative pt-20 md:pt-48 pb-20 md:pb-32 px-4 overflow-hidden min-h-[80vh] flex items-center justify-center">
         {/* Full Background Video/Energy Beam */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {config.homeVideoUrl ? (
@@ -69,13 +66,13 @@ export const Home: React.FC = () => {
             <Sparkles size={16} className="animate-pulse" /> {UI_TEXT.heroSparkle}
           </motion.div>
           
-          <div className="relative mb-6 md:mb-10">
+          <div className="relative mb-6 md:mb-10 hidden md:block">
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="relative z-20 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-cinzel font-black tracking-[0.05em] leading-tight max-w-4xl mx-auto uppercase px-4">
               <span className="text-aura-gradient block drop-shadow-[0_0_30px_rgba(147,51,234,0.5)]">{UI_TEXT.heroTitle}</span>
             </motion.h1>
           </div>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-16 md:mb-24 font-mystiqua px-6">{UI_TEXT.heroSubtitle}</motion.p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 md:gap-5">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-[15px] md:text-2xl text-slate-300 italic max-w-2xl mx-auto mb-16 md:mb-24 font-mystiqua px-6 hidden md:block">{UI_TEXT.heroSubtitle}</motion.p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 md:gap-5 mt-96 md:mt-0">
             <GradientButton variant="prismatic" onClick={() => navigate('/library')} className="px-6 py-2.5 w-full sm:w-auto text-[11px] md:text-xs">
               <BookOpen size={14} /> {UI_TEXT.exploreLibrary}
             </GradientButton>
@@ -124,7 +121,7 @@ export const Home: React.FC = () => {
 
       <section className="py-24 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h2 className="text-2xl md:text-4xl font-cinzel font-black mb-6 text-white uppercase">{UI_TEXT.testimonialsTitle}</h2>
+          <h2 className="text-xl md:text-2xl font-cinzel font-black mb-6 text-white uppercase">{UI_TEXT.testimonialsTitle}</h2>
           <p className="text-cyan-500 uppercase tracking-[0.4em] text-[10px] font-black mb-16">{UI_TEXT.testimonialsSubtitle}</p>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-20">
             {testimonials.map((testi, i) => (

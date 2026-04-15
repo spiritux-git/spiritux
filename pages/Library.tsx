@@ -26,7 +26,7 @@ export const Library: React.FC = () => {
         <GradientButton variant="primary" onClick={() => navigate('/')} className="mb-8 w-fit px-6 py-3 shadow-[0_0_20px_rgba(147,51,234,0.3)]">
           <ArrowLeft size={16} /> {UI_TEXT.backToHome}
         </GradientButton>
-        <h1 className="text-3xl md:text-5xl font-cinzel font-bold mb-6 md:mb-8">{UI_TEXT.libraryTitle}</h1>
+        <h1 className="text-3xl md:text-5xl font-cinzel font-bold mb-6 md:mb-8 text-center">{UI_TEXT.libraryTitle}</h1>
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <LuminousCard className="flex-1 w-full bg-transparent rounded-full">
             <div className="relative group w-full">
