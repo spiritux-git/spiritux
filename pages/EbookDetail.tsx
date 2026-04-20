@@ -24,9 +24,9 @@ export const EbookDetail: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="lg:col-span-5">
-          <LuminousCard className="shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
-            <div className="relative overflow-hidden rounded-[15px]">
-              <img src={ebook.image} alt={ebook.title} loading="lazy" className="w-full h-auto object-cover" />
+          <LuminousCard className="shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-[15px] bg-white/5">
+              <img src={ebook.image} alt={ebook.title} loading="lazy" className="w-full h-full object-cover" />
               {ebook.isPromo && (
                 <div className="absolute -top-3 -right-3 bg-gradient-to-br from-amber-400 to-orange-600 text-white font-black py-3 px-4 rounded-xl shadow-xl z-20 text-[8px] uppercase flex flex-col items-center">
                   <span>OFFRE</span><span className="text-sm mt-0.5">SACRÉE</span>

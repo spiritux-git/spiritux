@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Image as ImageIcon, Lock, X, Pencil, LayoutGrid, Check, Star, Info, ScrollText, Settings, Video, MessageCircle, Mail, LogOut, Database } from 'lucide-react';
+import { Trash2, Image as ImageIcon, Lock, X, Pencil, LayoutGrid, Check, Star, Info, ScrollText, Settings, Video, MessageCircle, Mail, LogOut, Database, Upload } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
 import { firebaseService } from '../services/firebaseService';
 import { loginWithGoogle, logout } from '../firebase';
@@ -82,6 +82,43 @@ export const Admin: React.FC = () => {
       category: 'Sagesse'
     };
     setEditingEbook(newBook);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    if (file.size > 921600) {
+      alert("L'image est trop lourde (max ~900 Ko). Firestore limite chaque document (livre) à 1 Mo au total.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (editingEbook) {
+        setEditingEbook({ ...editingEbook, image: reader.result as string });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+
+    if (file.size > 921600) {
+      alert("L'image est trop lourde (max ~900 Ko). Firestore limite chaque document (livre) à 1 Mo au total.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (editingEbook) {
+        setEditingEbook({ ...editingEbook, image: reader.result as string });
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   if (!isAuthReady) return null;
@@ -289,8 +326,40 @@ export const Admin: React.FC = () => {
                   <div className="space-y-3"><label className="text-[10px] font-black uppercase text-slate-500">Titre</label><input type="text" value={editingEbook.title} onChange={e => setEditingEbook({...editingEbook, title: e.target.value})} className="w-full bg-[#0a0c14] border border-white/5 rounded-xl px-4 py-3 text-white outline-none" /></div>
                   <div className="space-y-3"><label className="text-[10px] font-black uppercase text-slate-500">Catégorie</label><input type="text" value={editingEbook.category} onChange={e => setEditingEbook({...editingEbook, category: e.target.value})} className="w-full bg-[#0a0c14] border border-white/5 rounded-xl px-4 py-3 text-white outline-none" /></div>
                 </div>
+                <div 
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={handleDrop}
+                  className="w-full aspect-[21/9] rounded-[1.5rem] border-2 border-dashed border-white/5 hover:border-purple-500/20 transition-all flex items-center justify-center relative overflow-hidden bg-white/[0.01]"
+                >
+                  {editingEbook.image ? (
+                    <>
+                      <img src={editingEbook.image} alt="Preview" className="w-full h-full object-cover opacity-20 blur-xl" />
+                      <div className="absolute inset-0 flex items-center justify-center p-4">
+                        <img src={editingEbook.image} alt="Preview" className="max-h-full rounded-lg shadow-2xl object-contain border border-white/10" />
+                      </div>
+                      <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[8px] font-black uppercase text-white border border-white/10 group-hover:scale-110 transition-transform">Glisser-déposer pour changer</div>
+                    </>
+                  ) : (
+                    <div className="text-center">
+                      <Upload className="mx-auto mb-3 text-slate-700" size={32} />
+                      <p className="text-[10px] font-black uppercase text-slate-600">Glissez une couverture ici</p>
+                    </div>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3"><label className="text-[10px] font-black uppercase text-slate-500">URL Image</label><input type="text" value={editingEbook.image} onChange={e => setEditingEbook({...editingEbook, image: e.target.value})} className="w-full bg-[#0a0c14] border border-white/5 rounded-xl px-4 py-3 text-white outline-none" /></div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-slate-500 flex items-center justify-between">
+                      <span>URL Image</span>
+                      <span className="text-[8px] text-slate-600">Drag & Drop supporté</span>
+                    </label>
+                    <div className="flex gap-2">
+                       <input type="text" value={editingEbook.image} onChange={e => setEditingEbook({...editingEbook, image: e.target.value})} className="flex-1 bg-[#0a0c14] border border-white/5 rounded-xl px-4 py-3 text-white outline-none truncate" />
+                       <label className="cursor-pointer p-3 bg-purple-600/20 border border-purple-500/30 rounded-xl text-purple-400 hover:bg-purple-600/30 transition-all flex items-center justify-center">
+                         <Upload size={18} />
+                         <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
+                       </label>
+                    </div>
+                  </div>
                   <div className="space-y-3"><label className="text-[10px] font-black uppercase text-slate-500">Lien Chariow</label><input type="text" value={editingEbook.chariowLink} onChange={e => setEditingEbook({...editingEbook, chariowLink: e.target.value})} className="w-full bg-[#0a0c14] border border-white/5 rounded-xl px-4 py-3 text-blue-400 outline-none" /></div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
