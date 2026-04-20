@@ -1,67 +1,18 @@
 
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, BookOpen, Lock, DownloadCloud, Sparkles, Volume2, VolumeX, Loader2, ShoppingCart, MessageCircle } from 'lucide-react';
+import { ArrowLeft, BookOpen, Lock, DownloadCloud, Sparkles, ShoppingCart, MessageCircle } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
 import { LuminousCard } from '../components/LuminousCard';
 import { GradientButton } from '../components/GradientButton';
 import { UI_TEXT } from '../constants';
-import { GoogleGenAI, Modality } from "@google/genai";
-
-function decodeBase64(base64: string) {
-  const binaryString = atob(base64);
-  const bytes = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
-  return bytes;
-}
-
-async function decodeAudioData(data: Uint8Array, ctx: AudioContext, sampleRate: number, numChannels: number): Promise<AudioBuffer> {
-  const dataInt16 = new Int16Array(data.buffer);
-  const frameCount = dataInt16.length / numChannels;
-  const buffer = ctx.createBuffer(numChannels, frameCount, sampleRate);
-  for (let channel = 0; channel < numChannels; channel++) {
-    const channelData = buffer.getChannelData(channel);
-    for (let i = 0; i < frameCount; i++) channelData[i] = dataInt16[i * numChannels + channel] / 32768.0;
-  }
-  return buffer;
-}
 
 export const EbookDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { config, ebooks } = useFirebase();
   const ebook = useMemo(() => ebooks.find(b => b.id === id) || null, [id, ebooks]);
-  const [isAudioLoading, setIsAudioLoading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);
-
-  const handleReadSummary = async () => {
-    if (isPlaying) { currentSourceRef.current?.stop(); setIsPlaying(false); return; }
-    if (!ebook) return;
-    try {
-      setIsAudioLoading(true);
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
-        contents: [{ parts: [{ text: `Lit ce résumé de manière majestueuse : ${ebook.summary}` }] }],
-        config: { responseModalities: [Modality.AUDIO], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } } },
-      });
-      const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-      if (!base64Audio) throw new Error();
-      if (!audioContextRef.current) audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-      const ctx = audioContextRef.current;
-      const buffer = await decodeAudioData(decodeBase64(base64Audio), ctx, 24000, 1);
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(ctx.destination);
-      source.onended = () => setIsPlaying(false);
-      currentSourceRef.current = source;
-      source.start();
-      setIsPlaying(true);
-    } catch { alert(UI_TEXT.audioError); } finally { setIsAudioLoading(false); }
-  };
 
   if (!ebook) return null;
 
@@ -138,9 +89,6 @@ export const EbookDetail: React.FC = () => {
                     {UI_TEXT.manuscriptEssence}
                   </h2>
                 </div>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={handleReadSummary} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
-                  {isAudioLoading ? <Loader2 size={18} className="animate-spin text-amber-500" /> : isPlaying ? <VolumeX size={18} className="text-amber-500" /> : <Volume2 size={18} className="text-amber-500" />}
-                </motion.button>
               </div>
               <div className="text-base md:text-lg text-slate-300 leading-relaxed font-mystiqua text-justify">
                  <span className="float-left mr-3 mt-1 text-3xl md:text-4xl font-cinzel font-black text-gold-gradient leading-[0.8]">{ebook.summary.charAt(0)}</span>{ebook.summary.slice(1)}

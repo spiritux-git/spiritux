@@ -4,21 +4,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "tsx server.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^1.38.0",
+    "@types/express": "^4.17.21",
     "clsx": "^2.1.1",
+    "express": "^5.2.1",
     "firebase": "^12.12.0",
+    "firebase-admin": "^13.8.0",
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.563.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.0",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.8",

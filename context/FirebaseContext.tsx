@@ -32,12 +32,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
 
     const unsubscribeEbooks = firebaseService.subscribeToEbooks((data) => {
-      if (data.length > 0) {
-        setEbooks(data);
-      } else {
-        // If Firestore is empty, we might want to seed it or just use initial
-        setEbooks(INITIAL_EBOOKS);
-      }
+      // We always set ebooks to what's in Firebase. 
+      // If it's truly empty, we can show initial books for demo, 
+      // but we shouldn't mix them unless we have a clear reason.
+      setEbooks(data.length > 0 ? data : INITIAL_EBOOKS);
+      setLoading(false);
     });
 
     const unsubscribeConfig = firebaseService.subscribeToConfig((data) => {

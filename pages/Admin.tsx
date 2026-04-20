@@ -19,7 +19,7 @@ export const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'catalogue' | 'settings'>('catalogue');
 
   useEffect(() => {
-    if (fbEbooks.length > 0) setEbooks(fbEbooks);
+    setEbooks(fbEbooks);
   }, [fbEbooks]);
 
   useEffect(() => {
